@@ -16,7 +16,7 @@ app.get('api/v1/health', (req, res) => {
   res.status(200).json({ status: 'ok', uptime: process.uptime() });
 });
 
-const authRoute = require('./routes/authentication/authRoutes');
-app.use('api/v1/auth', authRoute);
+app.use('/api/v1/auth', require('./routes/authentication/authRoutes'));
+app.use('/api/v1/tasks', require('./routes/task/taskRoutes'));
 
 module.exports = app;
