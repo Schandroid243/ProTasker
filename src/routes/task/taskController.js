@@ -1,4 +1,5 @@
 const Task = require('../../models/task');
+const errorHandler = require('../../middlewares/errorHandler');
 
 // Create task
 exports.createTask = async (req, res) => {
@@ -12,7 +13,7 @@ exports.createTask = async (req, res) => {
     });
     return res.status(201).json(task);
   } catch (err) {
-    return res.status(400).json({ message: err.message });
+    return errorHandler(err, req, res);
   }
 };
 
@@ -22,7 +23,7 @@ exports.getTasks = async (req, res) => {
     const tasks = await Task.find({ owner: req.user.id });
     return res.status(200).json(tasks);
   } catch (err) {
-    return res.status(500).json({ message: err.message });
+    return errorHandler(err, req, res);
   }
 };
 
@@ -36,7 +37,7 @@ exports.getTask = async (req, res) => {
     if (!task) return res.status(404).json({ message: 'Task not found.' });
     return res.status(200).json(task);
   } catch (err) {
-    return res.status(500).json({ message: err.message });
+    return errorHandler(err, req, res);
   }
 };
 
@@ -51,8 +52,8 @@ exports.updateTask = async (req, res) => {
     Object.assign(task, req.body);
     await task.save();
     return res.status(200).json(task);
-  } catch (error) {
-    return res.status(400).json({ message: error.message });
+  } catch (err) {
+    return errorHandler(err, req, res);
   }
 };
 
@@ -65,7 +66,7 @@ exports.deleteTask = async (req, res) => {
     });
     if (!task) return res.status(404).json({ message: 'Task not found' });
     return res.status(200).json({ message: 'Task deleted successfully' });
-  } catch (error) {
-    return res.status(500).json({ message: error.message });
+  } catch (err) {
+    return errorHandler(err, req, res);
   }
 };
