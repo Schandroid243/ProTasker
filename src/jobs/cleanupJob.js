@@ -7,8 +7,8 @@ const Task = require('../models/task');
 cron.schedule('0 0 * * *', async () => {
   console.log('🧹 Running cleanup job...');
   try {
-    await Task.deleteMany({ completed: true, archived: true });
-    console.log('Cleanup finished!');
+    const result = await Task.deleteMany({ completed: true, archived: true });
+    console.log(`Cleanup finished! ${result.deletedCount} tasks removed.`);
   } catch (err) {
     console.error('Cleanup failed:', err);
   }
