@@ -4,6 +4,10 @@ const os = require('os');
 require('dotenv').config();
 const connectDB = require('./config/db');
 
+if (!cluster.isMaster) {
+  require('./src/jobs/cleanupJob');
+}
+
 if (cluster.isMaster) {
   const numCPUs = os.cpus().length;
   console.log(`Master ${process.pid} is running`);
